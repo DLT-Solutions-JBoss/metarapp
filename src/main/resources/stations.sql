@@ -884,7 +884,7 @@ insert into station (id, state, name, latitude, longitude) values ('KSUN','ID','
 insert into station (id, state, name, latitude, longitude) values ('KSZT','ID','Sandpoint Airport',48.3,-116.55);
 insert into station (id, state, name, latitude, longitude) values ('KTWF','ID','Twin Falls/Joslin',42.48,-114.48);
 insert into station (id, state, name, latitude, longitude) values ('KU78','ID','Soda Springs/Tigert',42.66,-111.58);
-insert into station (id, state, name, latitude, longitude) values ('KCOE','ID','COEUR D'ALENE(AWOS)',47.78,-116.82);
+insert into station (id, state, name, latitude, longitude) values ('KCOE','ID','COEUR D''ALENE(AWOS)',47.78,-116.82);
 insert into station (id, state, name, latitude, longitude) values ('KLWS','ID','Lewiston (amos)',46.39,-117.02);
 insert into station (id, state, name, latitude, longitude) values ('KP69','ID','Lowell',46.15,-115.6);
 insert into station (id, state, name, latitude, longitude) values ('KS14','ID','Spencer',44.3,-112.1);
@@ -929,7 +929,7 @@ insert into station (id, state, name, latitude, longitude) values ('KMTO','IL','
 insert into station (id, state, name, latitude, longitude) values ('KMVN','IL','Mount Vernon Automatic Weather Observing/Reporting',38.33,-88.87);
 insert into station (id, state, name, latitude, longitude) values ('KMWA','IL','Marion Regional',37.76,-89);
 insert into station (id, state, name, latitude, longitude) values ('KOLY','IL','Olney-Noble Airport',38.73,-88.18);
-insert into station (id, state, name, latitude, longitude) values ('KORD','IL','Chicago/O'Hare',41.98,-87.9);
+insert into station (id, state, name, latitude, longitude) values ('KORD','IL','Chicago/O''Hare',41.98,-87.9);
 insert into station (id, state, name, latitude, longitude) values ('KPIA','IL','General Downing - Peoria International Airport',40.66,-89.68);
 insert into station (id, state, name, latitude, longitude) values ('KPNT','IL','Pontiac Municipal Airport',40.92,-88.63);
 insert into station (id, state, name, latitude, longitude) values ('KPPQ','IL','Pittsfield Penstone Municipal Airport',39.63,-90.78);
