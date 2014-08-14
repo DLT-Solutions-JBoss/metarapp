@@ -9,14 +9,72 @@
 
 <script language="JavaScript">
 <!--
-
 var buffer;
 var output;
 var translated;
 
+function enableMetars()
+{
+   document.getElementById("getMetarsButton").disabled = false;
+   document.getElementById("translateMetarsButton").disabled = true;
+
+}
+
+function loadStationsByState()
+{
+   var stateCode = document.raw.state.value;
+   var restStationsHttp;
+
+   document.getElementById("getMetarsButton").disabled = true;
+
+   if (window.XMLHttpRequest)
+   {
+       // code for IE7+, Firefox, Chrome, Opera, Safari
+       restStationsHttp=new XMLHttpRequest();
+       restStationsHttp.overrideMimeType("application/json");
+   }
+   else
+   {
+       // code for IE6, IE5
+       restStationsHttp=new ActiveXObject("Microsoft.XMLHTTP");
+   }
+
+   var jsonRows = '';
+
+   restStationsHttp.onreadystatechange=function()
+   {
+      if (restStationsHttp.readyState==4 && restStationsHttp.status==200)
+      {
+          var jsonData = JSON.parse(restStationsHttp.responseText);
+          var option = document.createElement("option");
+
+          var x = document.getElementById("stations");
+
+          for (var i = x.length; i > 0; i--)
+	      {
+		    x.remove(i - 1);
+          }
+
+          for(var i = 0; i < jsonData.length; i++)
+          {
+             option = document.createElement("option");
+             option.text = jsonData[i].name;
+             option.value = jsonData[i].id;
+             x.add(option);
+          }
+      }
+   }
+
+   restStationsHttp.open("GET","/rest/METAR/station/state/"+stateCode,true);
+   restStationsHttp.send();
+}
+
 function loadMetars()
 {
-   var stationId = document.raw.stationCode.value;
+   var stationId = document.getElementById("stations").value;
+
+   document.raw.stations.value = stationId;
+
    var restMetarHttp;
 
    if (window.XMLHttpRequest)
@@ -45,11 +103,15 @@ function loadMetars()
           }
 
           document.raw.stationMetars.value=jsonRows;
+
+          document.getElementById("translateMetarsButton").disabled = false;
       }
    }
 
    restMetarHttp.open("GET","/rest/METAR/"+stationId,true);
    restMetarHttp.send();
+
+   document.getElementById("getMetarsButton").disabled = true;
 }
 
 /**
@@ -59,15 +121,6 @@ function loadMetars()
  */
 function metar()
 {
-    if( document.raw.stationCode.value.length < 4 )
-    {
-      alert("You must enter a valid Station ID to continue.");
-
-      return false;
-    }
-
-    loadMetars();
-
     var form = document.raw;
 
     translated = document.getElementById('translated');
@@ -125,7 +178,7 @@ function metar1()
 
 
 /**
- * This function is for general translations of items that aren't
+ * This function is for general translations of items that aren''t
  * metars or tafs.
  */
 function general() {
@@ -435,7 +488,7 @@ function translate_altimeter()
 }
 
 
-// TAF forecasts often contain cruft that's not explained in the
+// TAF forecasts often contain cruft that''s not explained in the
 // government handbook.  Just dump it out untranslated until we
 // encounter the end of a report or the start of another forecast line.
 function translate_noise()
@@ -529,7 +582,7 @@ function translate_from()
 // This is the giant catch-all.  Look for certain standard remarks
 // and then look for generic translations.  This is an array of
 // arrays of patterns.  Each pattern array contains a regular
-// expression to match the string, a function to call if there's
+// expression to match the string, a function to call if there''s
 // a match, and an optional argument to that function.
 
 var remarktab = [
@@ -1490,7 +1543,7 @@ function translate_remarks()
 
 /**
  * General translation function.  Read one token from the buffer, see
- * if it's in the remark table or the abbreviation dictionary.  If
+ * if it''s in the remark table or the abbreviation dictionary.  If
  * not found in either, just write it out to output.
  */
 function translate_remark()
@@ -1517,7 +1570,7 @@ function translate_remark()
 
     // If not found, look for an alphanumaric token.  If not found,
     // look for a non-alphanumeric token.  Whatever turns up, see if
-    // it's in the abbreviation list.
+    // it''s in the abbreviation list.
     if( !found ) {
 	var tok = buffer.match(/^[+\w]+/);
 	if( tok == null )
@@ -1789,7 +1842,7 @@ function wxEnded(tokens)
 
 /**
  * This class is the core of the input parser.  The entire input string
- * is copied into the SourceBuffer object when it's created.  Then the
+ * is copied into the SourceBuffer object when it''s created.  Then the
  * tokenized input is accessed via SBAdvance(), SBMatch(), and SBend()
  * methods.
  */
@@ -1832,8 +1885,8 @@ function SBMatch(pat)
 }
 
 /**
- * Return true if we're at the end of a report.  This means that
- * the token buffer is now empty or it starts with '=' which is
+ * Return true if we are at the end of a report.  This means that
+ * the token buffer is now empty or it starts with = which is
  * the delimiter that seperates reports.
  */
 function SBend()
@@ -1857,7 +1910,7 @@ function myClock()
   // setTimeout("myClock()", 1000);
 }
 
-// -->
+//-->
 </script>
 </head>
 
@@ -1871,12 +1924,68 @@ function myClock()
 
 </p>
  <form name="raw">
-    Enter the Station ID:
-    <p>
-    Station ID:  <input type="text" name="stationCode">
+    <select name="state">
+		<option value="AL">Alabama</option>
+		<option value="AK">Alaska</option>
+		<option value="AZ">Arizona</option>
+		<option value="AR">Arkansas</option>
+		<option value="CA">California</option>
+		<option value="CO">Colorado</option>
+		<option value="CT">Connecticut</option>
+		<option value="DE">Delaware</option>
+		<option value="DC">District Of Columbia</option>
+		<option value="FL">Florida</option>
+		<option value="GA">Georgia</option>
+		<option value="HI">Hawaii</option>
+		<option value="ID">Idaho</option>
+		<option value="IL">Illinois</option>
+		<option value="IN">Indiana</option>
+		<option value="IA">Iowa</option>
+		<option value="KS">Kansas</option>
+		<option value="KY">Kentucky</option>
+		<option value="LA">Louisiana</option>
+		<option value="ME">Maine</option>
+		<option value="MD">Maryland</option>
+		<option value="MA">Massachusetts</option>
+		<option value="MI">Michigan</option>
+		<option value="MN">Minnesota</option>
+		<option value="MS">Mississippi</option>
+		<option value="MO">Missouri</option>
+		<option value="MT">Montana</option>
+		<option value="NE">Nebraska</option>
+		<option value="NV">Nevada</option>
+		<option value="NH">New Hampshire</option>
+		<option value="NJ">New Jersey</option>
+		<option value="NM">New Mexico</option>
+		<option value="NY">New York</option>
+		<option value="NC">North Carolina</option>
+		<option value="ND">North Dakota</option>
+		<option value="OH">Ohio</option>
+		<option value="OK">Oklahoma</option>
+		<option value="OR">Oregon</option>
+		<option value="PA">Pennsylvania</option>
+		<option value="RI">Rhode Island</option>
+		<option value="SC">South Carolina</option>
+		<option value="SD">South Dakota</option>
+		<option value="TN">Tennessee</option>
+		<option value="TX">Texas</option>
+		<option value="UT">Utah</option>
+		<option value="VT">Vermont</option>
+		<option value="VA">Virginia</option>
+		<option value="WA">Washington</option>
+		<option value="WV">West Virginia</option>
+		<option value="WI">Wisconsin</option>
+		<option value="WY">Wyoming</option>
+    </select>
+    <select id="stations" size="8" onchange="enableMetars()"></select>
+    </p><p>
+    <input onclick="loadStationsByState()" value="Get Stations" type="button">
+    <p><p>
+    <input type="hidden" name="stationCode">
     <textarea cols="80" rows="10" name="stationMetars"></textarea>
     </p><p>
-    <input onclick="metar()" value="Get METARs" type="button">
+    <input id="getMetarsButton" onclick="loadMetars()" value="Get METARs" type="button" disabled>
+    <input id="translateMetarsButton" onclick="metar()" value="Translate METARs" type="button" disabled>
     <input value="Clear" type="reset">
 
 </p>
@@ -1890,3 +1999,4 @@ Result:<br>
 </form>
 </body>
 </html>
+
