@@ -22,6 +22,8 @@ function enableMetars()
 
 function loadStationsByState()
 {
+   alert("You are about to load all stations from the MySQL DB for : "+document.raw.state.value);
+
    var stateCode = document.raw.state.value;
    var restStationsHttp;
 
@@ -73,6 +75,8 @@ function loadMetars()
 {
    var stationId = document.getElementById("stations").value;
 
+   alert("You are about to pull METAR data from www.aviationweather.gov for station ID : "+stationId);
+
    document.raw.stations.value = stationId;
 
    var restMetarHttp;
@@ -121,6 +125,7 @@ function loadMetars()
  */
 function metar()
 {
+    alert("You are about to use local javascript to translate the METAR data.");
     var form = document.raw;
 
     translated = document.getElementById('translated');
@@ -1999,4 +2004,3 @@ Result:<br>
 </form>
 </body>
 </html>
-
