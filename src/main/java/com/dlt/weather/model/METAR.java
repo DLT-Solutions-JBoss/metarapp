@@ -4,7 +4,7 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2014.07.25 at 08:59:01 AM EDT 
 //
-
+//
 
 package com.dlt.weather.model;
 
