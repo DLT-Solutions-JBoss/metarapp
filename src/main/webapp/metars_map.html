@@ -73,7 +73,7 @@
            }
        }
 
-       restStationHttp.open("GET","/weather/rest/METAR/stations",true);
+       restStationHttp.open("GET","/rest/METAR/stations",true);
        restStationHttp.send();
      }
 
@@ -141,7 +141,7 @@
               }
            }
 
-           restMetarHttp.open("GET","/weather/rest/METAR/"+_marker.id,true);
+           restMetarHttp.open("GET","/rest/METAR/"+_marker.id,true);
            restMetarHttp.send();
        }
 

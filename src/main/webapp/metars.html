@@ -67,7 +67,7 @@ function loadStationsByState()
       }
    }
 
-   restStationsHttp.open("GET","/weather/rest/METAR/station/state/"+stateCode,true);
+   restStationsHttp.open("GET","/rest/METAR/station/state/"+stateCode,true);
    restStationsHttp.send();
 }
 
@@ -112,7 +112,7 @@ function loadMetars()
       }
    }
 
-   restMetarHttp.open("GET","/weather/rest/METAR/"+stationId,true);
+   restMetarHttp.open("GET","/rest/METAR/"+stationId,true);
    restMetarHttp.send();
 
    document.getElementById("getMetarsButton").disabled = true;
