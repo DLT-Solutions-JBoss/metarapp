@@ -8,5 +8,5 @@ RUN chgrp -R 0 /opt/appdynamics/
 RUN chmod -R g+rw /opt/appdynamics/
 RUN find /opt/appdynamics/ -type d -exec chmod g+x {} +
 
-#jboss from FIS
+#jboss from EAP
 USER 185
