@@ -200,7 +200,7 @@ objects:
           - name: AUTO_DEPLOY_EXPLODED
             value: ${AUTO_DEPLOY_EXPLODED}
           - name: JAVA_OPTS_APPEND
-            value: '-javaagent:/home/jboss/source/javaagent.jar'
+            value: ${APPDYNAMICS_AGENT_LOCATION}
           - name: TZ
             value: America/New_York
           - name: APPDYNAMICS_CONTROLLER_HOST_NAME
@@ -447,6 +447,10 @@ parameters:
     deployed
   name: AUTO_DEPLOY_EXPLODED
   value: "false"
+- description: The location of the java agent used for AppDynamics
+  name: APPDYNAMICS_AGENT_LOCATION
+  required: true
+  value: '-javaagent:/home/jboss/source/AppServerAgent-4.3.0.0/ver4.3.0.0/javaagent.jar'
 - description: AppDynamics Controller Host Name
   displayName: AppDynamics Controller Host Name
   name: APPDYNAMICS_CONTROLLER_HOST_NAME
