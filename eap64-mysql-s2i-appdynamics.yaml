@@ -450,7 +450,7 @@ parameters:
 - description: The location of the java agent used for AppDynamics
   name: APPDYNAMICS_AGENT_LOCATION
   required: true
-  value: '-javaagent:/home/jboss/source/AppServerAgent-4.3.0.0/ver4.3.0.0/javaagent.jar'
+  value: '-javaagent:/home/jboss/source/AppServerAgent-4.3.0.0/ver4.3.0.0/javaagent.jar -Dappdynamics.agent.logs.dir /home/eap'
 - description: AppDynamics Controller Host Name
   displayName: AppDynamics Controller Host Name
   name: APPDYNAMICS_CONTROLLER_HOST_NAME
