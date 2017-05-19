@@ -65,9 +65,9 @@
 
     <logger name="com.singularity" additivity="false">
         <!--  to control the logging level of the agent log files, use the level attribute below. value="all|trace|debug|info|warn|error"-->
-        <level value="info"/>
-        <appender-ref ref="AgentLogger"/>
-        <appender-ref ref="RESTLogger"/>
+         <level value="info"/>
+         <appender-ref ref="SyslogAppender"/>
+         <appender-ref ref="RESTLogger"/>
     </logger>
 
     <logger name="com.singularity.BusinessTransactions" additivity="false">
@@ -89,5 +89,14 @@
         <priority value="error"/>
         <appender-ref ref="AgentLogger"/>
     </root>
-
+    
+    <appender name="SyslogAppender" class="com.singularity.util.org.apache.log4j.net.SyslogAppender">
+        <param name="Facility" value="local6"/>
+        <param name="FacilityPrinting" value="true"/>
+        <param name="SysLogHost" value="localhost"/>
+        <layout class="com.singularity.util.org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="[%t] %d{DATE} %5p %c - %m%n"/>
+        </layout>
+    </appender>
+    
 </log4j:configuration>
