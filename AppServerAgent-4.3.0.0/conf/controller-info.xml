@@ -72,7 +72,7 @@
     This can be overridden with an environment variable 'APPDYNAMICS_AGENT_BASE_DIR' or
     the system property '-Dappdynamics.agent.runtime.dir'  -->
 
-    <agent-runtime-dir></agent-runtime-dir>
+    <agent-runtime-dir>/home/jboss</agent-runtime-dir>
 
     <!--  Set this flag to 'true' to enable features required for AppDynamics Orchestration.
     Currently this flag enables the agent to resolve the AppDynamics Controller host and port
