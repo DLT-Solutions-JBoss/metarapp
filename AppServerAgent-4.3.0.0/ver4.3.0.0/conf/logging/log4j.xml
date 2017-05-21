@@ -67,22 +67,21 @@
         <!--  to control the logging level of the agent log files, use the level attribute below. value="all|trace|debug|info|warn|error"-->
         <level value="info"/>
         <appender-ref ref="SyslogAppender"/>
-        <appender-ref ref="RESTLogger"/>
     </logger>
 
     <logger name="com.singularity.BusinessTransactions" additivity="false">
         <level value="info"/>
-        <appender-ref ref="BusinessTransactionsLogger"/>
+        <appender-ref ref="SyslogAppender"/>
     </logger>
 
     <logger name="com.singularity.dynamicservice" additivity="false">
         <level value="info"/>
-        <appender-ref ref="DynamicServiceLogger"/>
+        <appender-ref ref="SyslogAppender"/>
     </logger>
 
     <logger name="com.singularity.BCTLogger" additivity="false">
         <level value="info"/>
-        <appender-ref ref="BCTAppender"/>
+        <appender-ref ref="SyslogAppender"/>
     </logger>
 
     <root>
