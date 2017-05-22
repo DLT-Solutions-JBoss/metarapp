@@ -64,7 +64,6 @@
     </appender>
 
     <logger name="com.singularity" additivity="false">
-        <!--  to control the logging level of the agent log files, use the level attribute below. value="all|trace|debug|info|warn|error"-->
         <level value="info"/>
         <appender-ref ref="SyslogAppender"/>
     </logger>
