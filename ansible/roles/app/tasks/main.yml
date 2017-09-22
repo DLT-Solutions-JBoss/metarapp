@@ -1,0 +1,53 @@
+---
+- name: Create JBoss EAP MySQL module dir
+  file:
+    path: /opt/jboss-as/jboss-eap-6.4/modules/com/mysql/main
+    state: directory
+    recurse: yes
+
+- name: Create MySQL module
+  copy:
+    src: module.xml
+    dest: /opt/jboss-as/jboss-eap-6.4/modules/com/mysql/main/
+  register: mysql_module
+
+- name: Copy MySQL JDBC Driver
+  copy:
+    src: mysql-connector-java-5.1.38-bin.jar
+    dest: /opt/jboss-as/jboss-eap-6.4/modules/com/mysql/main/
+  register: mysql_driver
+
+- name: Ensure that standalone.xml is correct
+  template:
+    src: standalone.xml.j2
+    dest: /opt/jboss-as/jboss-eap-6.4/standalone/configuration/standalone.xml
+  register: standalone_config
+
+- service:
+    name: jboss-as-standalone.service
+    state: restarted
+  when: mysql_module|changed or mysql_driver|changed or standalone_config|changed
+
+- name: Check out the metarapp version being deployed
+  git:
+    repo: "{{ metarapp_repo }}"
+    accept_hostkey: yes
+    clone: yes
+    depth: 1
+    force: yes
+    dest: metarapp
+    version: "{{ commit_id }}"
+  become: no
+
+- name: Build the metarapp war
+  shell: mvn package
+  args:
+    chdir: metarapp
+  become: no
+
+- name: Deploy the JBoss app
+  jboss:
+    deploy_path: /opt/jboss-as/jboss-eap-6.4/standalone/deployments
+    src: metarapp/deployments/weather.war
+    deployment: metarapp.war
+    state: present

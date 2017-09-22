@@ -1,0 +1,4 @@
+jboss_eap_artifact_name: jboss-eap-6.4.0.zip
+transfer_method: csp-to-host
+jboss_eap_bind_management_interface: yes
+jboss_eap_apply_patch: no

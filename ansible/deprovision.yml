@@ -1,0 +1,16 @@
+- hosts: tag_CommitID_{{ commit_id }}
+  gather_facts: no
+  become: yes
+  tasks:
+    - redhat_subscription:
+        state: absent
+
+- hosts: tag_CommitID_{{ commit_id }}
+  gather_facts: no
+  become: no
+  tasks:
+    - ec2:
+        instance_ids: "{{ ec2_id }}"
+        region: "{{ aws_region }}"
+        state: absent
+      delegate_to: localhost

@@ -1,0 +1,6 @@
+mysql_user_home: /root
+mysql_db_host: localhost
+mysql_db_port: 3306
+mysql_db_database: metarapp
+mysql_db_username: metarapp
+mysql_db_password: metarapp

@@ -1,0 +1,24 @@
+---
+aws_region : us-east-1
+key_name: ansible-tower
+
+vpc_id: vpc-7bf2131c
+vpc_cidr: 172.31.0.0/16
+
+public_subnet_a_cidr: 172.31.0.0/20
+public_subnet_b_cidr: 172.31.16.0/20
+public_subnet_c_cidr: 172.31.32.0/20
+public_subnet_d_cidr: 172.31.48.0/20
+
+public_subnet_a_az: us-east-1c
+public_subnet_b_az: us-east-1d
+public_subnet_c_az: us-east-1e
+public_subnet_d_az: us-east-1b
+
+public_subnet_a_id: subnet-871a58f1
+public_subnet_b_id: subnet-871a58f1
+public_subnet_c_id: subnet-7203574f
+public_subnet_d_id: subnet-cf1f8fe5
+
+amis:
+  rhel_7_2: ami-46c1b650

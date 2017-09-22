@@ -1,0 +1,92 @@
+---
+- name: Provision AWS resources
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  become: no
+  tasks:
+    - name: Ensure the metarapp-test security group exists
+      ec2_group:
+        name: metarapp-test
+        description: metarapp-test
+        vpc_id: "{{ vpc_id }}"
+        region: "{{ aws_region }}"
+        rules:
+          - proto: all
+            from_port: -1
+            to_port: -1
+            cidr_ip: 0.0.0.0/0
+
+    - name: Provision an EC2 instance
+      ec2:
+        groups: metarapp-test
+        image: "{{ amis['rhel_7_2'] }}"
+        instance_tags:
+          Name: metarapp test {{ commit_id }}
+          CommitID: "{{ commit_id }}"
+          Company: Red Hat
+        key_name: "{{ key_name }}"
+        region: "{{ aws_region }}"
+        zone: "{{ public_subnet_a_az }}"
+        vpc_subnet_id: "{{ public_subnet_a_id }}"
+        instance_type: t2.medium
+        wait: yes
+        exact_count: 1
+        assign_public_ip: yes
+        count_tag:
+          Name: metarapp test {{ commit_id }}
+          CommitID: "{{ commit_id }}"
+          Company: Red Hat
+      register: image_provisioning
+
+    - set_fact:
+        instance_ip: "{{ image_provisioning.instances[0].public_ip }}"
+      when: image_provisioning.instances is defined and image_provisioning.instances
+
+    - set_fact:
+        instance_ip: "{{ image_provisioning.tagged_instances[0].public_ip }}"
+      when: image_provisioning.instances is defined and image_provisioning.tagged_instances
+
+    - add_host:
+        name: "{{ instance_ip }}"
+        groups: tag_CommitID_{{ commit_id }}
+      changed_when: no
+
+    - name: instance ip
+      debug:
+        msg: "{{ instance_ip }}"
+
+- name: Gather facts and wait for the instance
+  hosts: tag_CommitID_{{ commit_id }}
+  gather_facts: no
+  become: no
+  tasks:
+    - name: Wait for SSH access to the instance
+      wait_for:
+        port: 22
+        host: "{{ inventory_hostname }}"
+        timeout: 320
+        state: started
+      delegate_to: localhost
+
+- name: Configure provisioned instance
+  hosts: tag_CommitID_{{ commit_id }}
+  gather_facts: yes
+  become: yes
+  roles:
+    - role: base
+    - role: mysql
+      mysql_databases:
+        - name: "{{ mysql_db_database }}"
+      mysql_users:
+        - name: "{{ mysql_db_username }}"
+          password: "{{ mysql_db_password }}"
+          priv: "*.*:ALL"
+    - role: jboss_eap
+
+- name: Deploy app to provisioned instance
+  hosts: tag_CommitID_{{ commit_id }}
+  gather_facts: yes
+  become: yes
+  roles:
+    - app

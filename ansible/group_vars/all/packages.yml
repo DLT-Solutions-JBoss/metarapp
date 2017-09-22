@@ -1,0 +1,19 @@
+enable_epel: yes
+enable_optional: yes
+common_base_packages:
+  - bash
+  - git
+  - rsync
+  - unzip
+rhel_base_packages:
+  - python-pip
+  - python-devel
+  - java-1.8.0-openjdk-devel
+  - maven
+  - mysql
+  - mysql-connector-python
+  - MySQL-python
+python_packages:
+  - requests
+  - lxml
+  - boto
