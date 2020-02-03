@@ -24,22 +24,22 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 
     <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map-canvas'), {
-          center: {lat: 37.09024, lng: -95.712891},
-          zoom: 5
-        });
-      }
-       
+      //var map;
       //function initMap() {
-      //   var myLatlng = new google.maps.LatLng(37.09024,-95.712891);
-      //   var mapOptions = {
-      //         zoom: 5,
-      //         center: myLatlng
-      // };
+      //  map = new google.maps.Map(document.getElementById('map-canvas'), {
+      //    center: {lat: 37.09024, lng: -95.712891},
+      //    zoom: 5
+      //  });
+      //}
+       
+      function initMap() {
+         var myLatlng = new google.maps.LatLng(37.09024,-95.712891);
+         var mapOptions = {
+               zoom: 5,
+               center: myLatlng
+         };
 
-      //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
        var restStationHttp;
 
