@@ -28,57 +28,55 @@
     <script>
 
       function initialize() {
-          var map = new google.maps.Map(
+          
+        var map = new google.maps.Map(
             document.getElementById('map'), {
               center: new google.maps.LatLng(37.09024,-95.712891),
               zoom: 13,
               mapTypeId: google.maps.MapTypeId.ROADMAP
           });
-       }
             
-       var restStationHttp;
+        var restStationHttp;
 
-       if (window.XMLHttpRequest)
-       {
-          // code for IE7+, Firefox, Chrome, Opera, Safari
-          restStationHttp=new XMLHttpRequest();
-          restStationHttp.overrideMimeType("application/json");
+        if (window.XMLHttpRequest)
+        {
+           // code for IE7+, Firefox, Chrome, Opera, Safari
+           restStationHttp=new XMLHttpRequest();
+           restStationHttp.overrideMimeType("application/json");
+        }
+        else
+        {
+           // code for IE6, IE5
+           restStationHttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        restStationHttp.onreadystatechange=function()
+        {
+           if (restStationHttp.readyState==4 && restStationHttp.status==200)
+           {
+               var jsonData = JSON.parse(restStationHttp.responseText);
+               var aLatlng = new google.maps.LatLng(0,0);
+               var aMarker;
+
+               for(var i = 0; i < jsonData.length; i++)
+               {
+                  aLatlng = new google.maps.LatLng(jsonData[i].latitude,jsonData[i].longitude);
+                  aMarker = new google.maps.Marker(
+                       {position: aLatlng, 
+                        icon: {path: google.maps.SymbolPath.CIRCLE, scale: 2},
+                        map: map,
+                        id: jsonData[i].id,
+                        title: jsonData[i].name });
+
+                  google.maps.event.addListener(aMarker, 'click', (function(aMarker, i) 
+                       { return function() { loadInfoWindow(map, aMarker); } })(aMarker, i));
+               }
+            }
+        }
+
+        restStationHttp.open("GET","/rest/METAR/stations",true);
+        restStationHttp.send();
        }
-       else
-       {
-          // code for IE6, IE5
-          restStationHttp=new ActiveXObject("Microsoft.XMLHTTP");
-       }
-
-       restStationHttp.onreadystatechange=function()
-       {
-          if (restStationHttp.readyState==4 && restStationHttp.status==200)
-          {
-              var jsonData = JSON.parse(restStationHttp.responseText);
-              var aLatlng = new google.maps.LatLng(0,0);
-              var aMarker;
-
-              for(var i = 0; i < jsonData.length; i++)
-              {
-                 aLatlng = new google.maps.LatLng(jsonData[i].latitude,jsonData[i].longitude);
-                 aMarker = new google.maps.Marker(
-                      {position: aLatlng, 
-                       icon: {path: google.maps.SymbolPath.CIRCLE, scale: 2},
-                       map: map,
-                       id: jsonData[i].id,
-                       title: jsonData[i].name });
-
-                 google.maps.event.addListener(aMarker, 'click', (function(aMarker, i) 
-                      { return function() { loadInfoWindow(map, aMarker); } })(aMarker, i));
-
-              }
-
-           }
-       }
-
-       restStationHttp.open("GET","/rest/METAR/stations",true);
-       restStationHttp.send();
-     }
 
        function loadInfoWindow(_map, _marker) {
            var restMetarHttp;
