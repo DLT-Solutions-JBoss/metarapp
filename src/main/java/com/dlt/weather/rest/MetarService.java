@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.net.URL;
 import java.util.List;
 
