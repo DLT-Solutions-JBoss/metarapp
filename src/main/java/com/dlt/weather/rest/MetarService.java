@@ -53,7 +53,17 @@ public class MetarService implements WeatherService{
 
            	       // just want to do an HTTP GET here
            	       myURLConnection.setRequestMethod("GET");
-
+                  
+                   //Set Request Headers
+                   myURLConnection.setRequestProperty("Accept-Language","en-US,en;q=0.5");
+                   myURLConnection.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+	                 myURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                   myURLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate"); 
+                   myURLConnection.setRequestProperty("Host", "metarapp-dev-user0.dltssf.demo-dlt.com");
+                   myURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
+                   myURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0");
+                   myURLConnection.setRequestProperty("Cache-Control", "max-age=0");
+                                                      
            	       // uncomment this if you want to write output to this url
            	       myURLConnection.setDoOutput(true);
 
