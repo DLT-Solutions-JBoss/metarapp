@@ -58,8 +58,8 @@ public class MetarService implements WeatherService{
                    myURLConnection.setRequestProperty("Accept-Language","en-US,en;q=0.5");
                    myURLConnection.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 	           myURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                   myURLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate"); 
-                   myURLConnection.setRequestProperty("Host", "metarapp-dev-user0.dltssf.demo-dlt.com");
+                   myURLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate, br"); 
+                   myURLConnection.setRequestProperty("Host", "www.aviationweather.gov");
                    myURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
                    myURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0");
                    myURLConnection.setRequestProperty("Cache-Control", "max-age=0");
@@ -71,42 +71,45 @@ public class MetarService implements WeatherService{
            	       myURLConnection.setReadTimeout(15*1000);
            	       myURLConnection.connect();
                   
-                   if (myURLConnection.getResponseCode() != 200) {
-                      return metar;
-                   }
+                   if (myURLConnection.getResponseCode() == 200) {
 
-           	       // wrap the urlconnection in a bufferedReader
-           	       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream(), StandardCharsets.UTF_8));
-                   StringBuffer responseXmlString = new StringBuffer();
-                   String xmlString;
+           	     // wrap the urlconnection in a bufferedReader
+           	     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream(), StandardCharsets.UTF_8));
+                     StringBuffer responseXmlString = new StringBuffer();
+                     String xmlString;
 
-                   while ((xmlString = bufferedReader.readLine()) != null)
-                   {
-                	   responseXmlString.append(xmlString);
-                   }
-                   bufferedReader.close();
+                     while ((xmlString = bufferedReader.readLine()) != null)
+                     {
+                  	   responseXmlString.append(xmlString);
+                     }
+                     bufferedReader.close();
 
-                   System.out.println("Returned XML String = "+responseXmlString.toString());
+                     System.out.println("Returned XML String = "+responseXmlString.toString());
 
-         		       JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
+         	     JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
 
-         		       Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+         	     Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                   
-         		       StringReader reader = new StringReader(responseXmlString.toString());
+         	     StringReader reader = new StringReader(responseXmlString.toString());
                   
-         		       Response metarResponse = (Response) jaxbUnmarshaller.unmarshal(reader);
-         		       metar = metarResponse.getData().getMETAR();
+         	     Response metarResponse = (Response) jaxbUnmarshaller.unmarshal(reader);
+         	     metar = metarResponse.getData().getMETAR();
 
-         	    }
-           	    catch (JAXBException e)
-         	    {
-         		    e.printStackTrace();
-         	    }
-           	    catch (Exception e)
-         	    {
-         		    e.printStackTrace();
-         	    }
-
+         	  }
+           	  catch (JAXBException e)
+         	  {
+         	     e.printStackTrace();
+           	  }
+           	  catch (Exception e)
+         	  {
+         	     e.printStackTrace();
+         	  }
+	        }
+		else
+		{
+		  System.out.println("Call to www.aviationweather.gov failed with response code = "+myURLConnection.getResponseCode());
+		}
+	
                 return metar;
         }
 
