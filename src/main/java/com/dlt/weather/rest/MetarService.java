@@ -59,9 +59,13 @@ public class MetarService implements WeatherService{
            	       // give it 15 seconds to respond
            	       myURLConnection.setReadTimeout(15*1000);
            	       myURLConnection.connect();
+                  
+                   if (myURLConnection.getResponseCode() != 200) {
+                      return metar;
+                   }
 
            	       // wrap the urlconnection in a bufferedReader
-           	       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
+           	       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream(), StandardCharsets.UTF_8));
                    StringBuffer responseXmlString = new StringBuffer();
                    String xmlString;
 
@@ -73,12 +77,14 @@ public class MetarService implements WeatherService{
 
                    System.out.println("Returned XML String = "+responseXmlString.toString());
 
-         		   JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
+         		       JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
 
-         		   Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-         		   StringReader reader = new StringReader(responseXmlString.toString());
-         		   Response metarResponse = (Response) jaxbUnmarshaller.unmarshal(reader);
-         		   metar = metarResponse.getData().getMETAR();
+         		       Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                  
+         		       StringReader reader = new StringReader(responseXmlString.toString());
+                  
+         		       Response metarResponse = (Response) jaxbUnmarshaller.unmarshal(reader);
+         		       metar = metarResponse.getData().getMETAR();
 
          	    }
            	    catch (JAXBException e)
