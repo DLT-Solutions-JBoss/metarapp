@@ -56,8 +56,8 @@ public class MetarService implements WeatherService{
                   
                    //Set Request Headers
                    myURLConnection.setRequestProperty("Accept-Language","en-US,en;q=0.5");
-                   myURLConnection.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-	                 myURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                   myURLConnection.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+	           myURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                    myURLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate"); 
                    myURLConnection.setRequestProperty("Host", "metarapp-dev-user0.dltssf.demo-dlt.com");
                    myURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
