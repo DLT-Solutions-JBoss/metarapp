@@ -71,7 +71,8 @@ public class MetarService implements WeatherService{
            	       myURLConnection.setReadTimeout(15*1000);
            	       myURLConnection.connect();
                   
-                   if (myURLConnection.getResponseCode() == 200) {
+                   if (myURLConnection.getResponseCode() == 200) 
+		   {
 
            	     // wrap the urlconnection in a bufferedReader
            	     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(myURLConnection.getInputStream(), StandardCharsets.UTF_8));
@@ -94,6 +95,12 @@ public class MetarService implements WeatherService{
                   
          	     Response metarResponse = (Response) jaxbUnmarshaller.unmarshal(reader);
          	     metar = metarResponse.getData().getMETAR();
+	           }
+		   else
+		   {
+		      System.out.println("Call to www.aviationweather.gov failed with response code = "+myURLConnection.getResponseCode());
+		      return metar;
+		   }
 
          	  }
            	  catch (JAXBException e)
@@ -104,12 +111,7 @@ public class MetarService implements WeatherService{
          	  {
          	     e.printStackTrace();
          	  }
-	        }
-		else
-		{
-		  System.out.println("Call to www.aviationweather.gov failed with response code = "+myURLConnection.getResponseCode());
-		}
-	
+
                 return metar;
         }
 
