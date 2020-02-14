@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.net.HttpURLConnection;
+import java.net.HttpsURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.net.URL;
 import java.util.List;
@@ -48,8 +49,8 @@ public class MetarService implements WeatherService{
            	    try
            	    {
 
-           	       URL myURL = new URL("http://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=4&stationString="+sStationId);
-           	       HttpURLConnection myURLConnection = (HttpURLConnection) myURL.openConnection();
+           	       URL myURL = new URL("https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=4&stationString="+sStationId);
+           	       HttpsURLConnection myURLConnection = (HttpsURLConnection) myURL.openConnection();
 
            	       // just want to do an HTTP GET here
            	       myURLConnection.setRequestMethod("GET");
