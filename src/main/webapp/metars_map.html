@@ -6,8 +6,6 @@
     <script src="include/metars.js"></script>
     <link rel="shortcut icon" href="https://www.dlt.com/sites/default/files/favicon.ico" />
     <title>METAR Locations Version 1</title>
-
-    <script src="//maps.googleapis.com/maps/api/js" type="text/javascript"></script>
     
     <style type="text/css">
       html, body, #map { height: 100%; margin: 0; padding: 0px; }
@@ -44,7 +42,7 @@
            // code for IE6, IE5
            restStationHttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
-
+        
         restStationHttp.onreadystatechange=function()
         {
            if (restStationHttp.readyState==4 && restStationHttp.status==200)
@@ -70,6 +68,8 @@
         }
 
         restStationHttp.open("GET","/rest/METAR/stations",true);
+        //restStationHttp.setRequestHeader('X-PINGOTHER', 'pingpong');
+        //restStationHttp.setRequestHeader('Content-Type', 'application/xml');
         restStationHttp.send();
        }
 
@@ -138,6 +138,8 @@
            }
 
            restMetarHttp.open("GET","/rest/METAR/"+_marker.id,true);
+           //restStationHttp.setRequestHeader('X-PINGOTHER', 'pingpong');
+           //restStationHttp.setRequestHeader('Content-Type', 'application/xml');
            restMetarHttp.send();
        }
     </script>
