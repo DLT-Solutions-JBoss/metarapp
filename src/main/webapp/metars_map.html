@@ -6,7 +6,7 @@
     <script src="include/metars.js"></script>
     <link rel="shortcut icon" href="https://www.dlt.com/sites/default/files/favicon.ico" />
     <title>METAR Locations Version 1</title>
-    
+
     <style type="text/css">
       html, body, #map { height: 100%; margin: 0; padding: 0px; }
 
@@ -15,20 +15,20 @@
         color: #ff0000;
         font-family:Arial, Helvetica, sans-serif;
     }
-    </style>    
+    </style>
   </head>
   <body>
     <div id="map"></div>
     <script>
 
       function initMap() {
-          
+
         var map = new google.maps.Map(
             document.getElementById('map'), {
               center: new google.maps.LatLng(37.09024,-95.712891),
               zoom: 5
           });
-            
+
         var restStationHttp;
 
         if (window.XMLHttpRequest)
@@ -42,7 +42,7 @@
            // code for IE6, IE5
            restStationHttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
-        
+
         restStationHttp.onreadystatechange=function()
         {
            if (restStationHttp.readyState==4 && restStationHttp.status==200)
@@ -55,19 +55,19 @@
                {
                   aLatlng = new google.maps.LatLng(jsonData[i].latitude,jsonData[i].longitude);
                   aMarker = new google.maps.Marker(
-                       {position: aLatlng, 
+                       {position: aLatlng,
                         icon: {path: google.maps.SymbolPath.CIRCLE, scale: 2},
                         map: map,
                         id: jsonData[i].id,
                         title: jsonData[i].name });
 
-                  google.maps.event.addListener(aMarker, 'click', (function(aMarker, i) 
+                  google.maps.event.addListener(aMarker, 'click', (function(aMarker, i)
                        { return function() { loadInfoWindow(map, aMarker); } })(aMarker, i));
                }
             }
         }
 
-        restStationHttp.open("GET","/rest/METAR/stations",true);
+        restStationHttp.open("GET","/metar/rest/stations",true);
         //restStationHttp.setRequestHeader('X-PINGOTHER', 'pingpong');
         //restStationHttp.setRequestHeader('Content-Type', 'application/xml');
         restStationHttp.send();
@@ -101,13 +101,13 @@
 
                  for(var i = 0; i < jsonData.length; i++)
                  {
-                    jsonRows += jsonData[i].rawText+"<br>";
-                    aMetars += jsonData[i].rawText+"";
+                    jsonRows += jsonData[i].raw_text+"<br>";
+                    aMetars += jsonData[i].raw_text+"";
                  }
 
                  var regExpRepace = new RegExp(", "+_marker.id, "gi");
                  aTranslatedMetars = metar(aMetars);
-                 aTranslatedMetars = 
+                 aTranslatedMetars =
                      aTranslatedMetars.replace(regExpRepace, "<br>"+_marker.id);
 
                  aContentString = '<div id="content">'+
@@ -133,11 +133,11 @@
                  }
 
                  var aInfowindow = new google.maps.InfoWindow({ content: aContentString });
-                 aInfowindow.open(_map,_marker); 
+                 aInfowindow.open(_map,_marker);
               }
            }
 
-           restMetarHttp.open("GET","/rest/METAR/"+_marker.id,true);
+           restMetarHttp.open("GET","/metar/rest/"+_marker.id,true);
            //restStationHttp.setRequestHeader('X-PINGOTHER', 'pingpong');
            //restStationHttp.setRequestHeader('Content-Type', 'application/xml');
            restMetarHttp.send();

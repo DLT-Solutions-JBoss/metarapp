@@ -4,16 +4,20 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.lang.annotation.Annotation;
 import javax.net.ssl.HttpsURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -26,44 +30,45 @@ import com.dlt.weather.model.Response;
 import com.dlt.weather.model.Station;
 
 
-//Dummy comment
-@Path("/METAR")
-public class MetarService implements WeatherService{
+@Provider
+@Path("")
+public class MetarService  {
 
   //      @WebServiceRef(wsdlLocation="http://aviationweather.gov/adds/schema/metar1_2.xsd")
   //      static AviationService service;
 
-        @WeatherService(ServiceType.METAR)
         @PersistenceContext(unitName="metarapp", type=PersistenceContextType.EXTENDED)
         private EntityManager emStation;
 
         @GET()
         @Path("{stationId}")
-        @Produces("application/json")
-        @WeatherService(ServiceType.METAR)
+        @Produces(MediaType.APPLICATION_JSON)
         public List<METAR> listMetars(@PathParam("stationId") String sStationId)
         {
                 List <METAR> metar = null;
 
            	    try
            	    {
+           	       Date now = new Date();
+           	       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+           	       String sEndTime = formatter.format(now);
+           	       System.out.println("Current time ="+sEndTime);
+           	       
+           	       Calendar cal = Calendar.getInstance();
+           	       cal.setTime(now);
+           	       cal.add(Calendar.HOUR, -4);
+           	       Date oneHourBack = cal.getTime();
+           	       
+           	       String sStartTime = formatter.format(oneHourBack);
+        	       System.out.println("An hour ago ="+sStartTime);
 
-           	       URL myURL = new URL("https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&hoursBeforeNow=4&stationString="+sStationId);
+           	       //URL myURL = new URL("https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&mostRecent=true&format=xml&startTime=2023-11-06T18:20:21Z&endTime=2023-11-07T18:46:21Z&stationString="+sStationId);
+        	       URL myURL = new URL("https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&mostRecent=true&format=xml&startTime="+sStartTime+"&endTime="+sEndTime+"&stationString="+sStationId);
            	       HttpsURLConnection myURLConnection = (HttpsURLConnection) myURL.openConnection();
 
            	       // just want to do an HTTP GET here
            	       myURLConnection.setRequestMethod("GET");
-                  
-                   //Set Request Headers
-//                   myURLConnection.setRequestProperty("Accept-Language","en-US,en;q=0.5");
-//                   myURLConnection.setRequestProperty("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-//  	             myURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//                   myURLConnection.setRequestProperty("Accept-Encoding", "gzip, deflate, br"); 
-//                   myURLConnection.setRequestProperty("Host", "www.aviationweather.gov");
-//                   myURLConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
-//                   myURLConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0");
-//                   myURLConnection.setRequestProperty("Cache-Control", "max-age=0");
-                                                      
+                                               
            	       // uncomment this if you want to write output to this url
            	       myURLConnection.setDoOutput(true);
 
@@ -117,8 +122,7 @@ public class MetarService implements WeatherService{
 
         @GET()
         @Path("station/{stationId}")
-        @Produces("application/json")
-        @WeatherService(ServiceType.METAR)
+        @Produces(MediaType.APPLICATION_JSON)
         public List<Station> getStation(@PathParam("stationId") String sStationId)
         {
 
@@ -132,8 +136,7 @@ public class MetarService implements WeatherService{
 
         @GET()
         @Path("station/state/{stateCode}")
-        @Produces("application/json")
-        @WeatherService(ServiceType.METAR)
+        @Produces(MediaType.APPLICATION_JSON)
         public List<Station> getStationsByState(@PathParam("stateCode") String sStateCode)
         {
 
@@ -147,8 +150,7 @@ public class MetarService implements WeatherService{
 
         @GET()
         @Path("stations")
-        @Produces("application/json")
-        @WeatherService(ServiceType.METAR)
+        @Produces(MediaType.APPLICATION_JSON)
         public List<Station> getStations()
         {
 
@@ -158,14 +160,6 @@ public class MetarService implements WeatherService{
 
                 return station;
         }
-
-        @Override
-        public Class<? extends Annotation> annotationType() {
-                return null;
-        }
-        @Override
-        public ServiceType value() {
-                return null;
-        }
+        
 }
 
