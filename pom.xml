@@ -306,9 +306,9 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
-                        <version>${version.war.plugin}</version>
+                        <version>3.4.1-SNAPSHOT</version>
                         <configuration>
-                            <warName>ROOT</warName>
+                            <warName>metar</warName>
                         </configuration>
                     </plugin>
                     <plugin>
