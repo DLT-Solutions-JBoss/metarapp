@@ -16,6 +16,32 @@
         font-family:Arial, Helvetica, sans-serif;
     }
     </style>
+
+<script>
+  (function(h,o,u,n,d) {
+    h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
+    d=o.createElement(u);d.async=1;d.src=n
+    n=o.getElementsByTagName(u)[0];n.parentNode.insertBefore(d,n)
+  })(window,document,'script','https://www.datadoghq-browser-agent.com/us5/v5/datadog-rum.js','DD_RUM')
+  window.DD_RUM.onReady(function() {
+    window.DD_RUM.init({
+      clientToken: 'pubf7c4b4297e6d003e036d74869342de8e',
+      applicationId: '2b09c70e-5435-4008-b805-5bb9a09a0405',
+      site: 'us5.datadoghq.com',
+      service: 'metar',
+      env: '<ENV_NAME>',
+      // Specify a version number to identify the deployed version of your application in Datadog 
+      // version: '1.0.0', 
+      sessionSampleRate: 100,
+      sessionReplaySampleRate: 20,
+      trackUserInteractions: true,
+      trackResources: true,
+      trackLongTasks: true,
+      defaultPrivacyLevel: 'mask-user-input',
+    });
+  })
+</script>
+    
   </head>
   <body>
     <div id="map"></div>
